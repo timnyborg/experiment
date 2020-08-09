@@ -15,8 +15,18 @@ export let NOTATIONS = {
                 return number.toFixed(0);
             } else {
                 return Math.floor(number / 1000) + 'K'
+            }            
+        }
+    },
+    logarithmic: {
+        display_name: 'Logarithmic',
+        format: function(number){
+            if (number < 1000) {
+                return number.toFixed(0);
+            } else {
+                let exponent = Math.log10(number);
+                return 'e' + exponent.toFixed(2);
             }
-            
         }
     }
 }

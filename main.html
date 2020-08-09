@@ -32,17 +32,17 @@
 				</p>
 			</div>
 
-			<div class="tabs">
-				<ul>
-					<li 
-                        v-for="tab in tabs" 
-                        :class="{ 'is-active': tab == active_tab }"
-						@click.prevent="set_active_tab(tab)"
+			<b-tabs v-model='active_tab'>
+                <template v-for="(tab, index) in tabs">
+                    <b-tab-item
+                        v-if="tab.displayed"                        
+                        :label="tab.label"
+                        :value="tab.label"    
                     >
-						<a>{{ tab }}</a>
-					</li>
-				</ul>
-			</div>
+                        {{ tab.content }}
+                    </b-tab-item>
+                </template>
+			</b-tabs>
 
 			<template v-if="active_tab == 'Numbers'">
 				<div class="columns">
@@ -60,28 +60,23 @@
 				</div>
 			</template>
             <template v-if="active_tab == 'Options'">
-                <div class="dropdown is-active">
-                    <div class="dropdown-trigger">
-                        <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                        <span>Notations</span>
+                <p>Notation</p>
+                <b-dropdown class="dropdown-trigger">
+                    <button class="button" slot="trigger" slot-scope="{ active }">
+                        <span>{{ active_notation.display_name }}</span>
                         <span class="icon is-small">
                             <i class="fas fa-angle-down" aria-hidden="true"></i>
                         </span>
-                        </button>
-                    </div>
-                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                        <div class="dropdown-content">
-                            <a 
-                               v-for="notation in notations" 
-                               class="dropdown-item"
-                               :class="{ 'is-active': notation == active_notation }"
-                               v-on:click="set_notation(notation)"
-                            >
-                                {{ notation.display_name }}
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                    </button>
+                    <b-dropdown-item 
+                        v-for="notation in notations" 
+                        class="dropdown-item"
+                        :class="{ 'is-active': notation == active_notation }"
+                        @click="set_notation(notation)"
+                    >
+                        {{ notation.display_name }}
+                    </b-dropdown-item>
+                </b-dropdown>
             </template>
 		</div>
 	</section>

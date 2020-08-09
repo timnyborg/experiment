@@ -1,7 +1,12 @@
-import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.esm.browser.js';
 import { PRODUCERS } from '../producers.js';
 import { buy, data } from '../main.js';
 import { NOTATIONS } from '../notation.js';
+
+import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.esm.browser.js';
+import { Dropdown, Tabs } from 'https://cdn.jsdelivr.net/npm/buefy@0.8.20/dist/buefy.esm.js';
+
+Vue.use(Dropdown)
+Vue.use(Tabs)
 
 Vue.component('producer', {
     props: ['count', 'cost', 'name', 'id', 'base_cost', 'buyable'],
@@ -44,7 +49,22 @@ var obj = {
     producers: PRODUCERS,
     notations: NOTATIONS,
     tabs: [
-        'Numbers', 'Multipliers', 'Exponents', 'Options'
+        {
+            label: 'Numbers',
+            displayed: true,
+        },
+        {
+            label: 'Multipliers',
+            displayed: true,
+        },
+        {
+            label: 'Exponents',
+            displayed: true,
+        },
+        {
+            label: 'Options',
+            displayed: true,
+        },
     ],
     active_tab: null,
     active_notation: null,
@@ -62,15 +82,12 @@ new Vue({
     data: obj,
     methods: {
         buy: buy,
-        set_active_tab(option) {
-            this.active_tab = option;
-        },
         set_notation(option) {
             this.active_notation = option
         }
     },
     mounted(){
-        this.active_tab = this.tabs[0];
+        this.active_tab = this.tabs[0].label;
         this.active_notation = this.notations.metric;
     },    
 })
