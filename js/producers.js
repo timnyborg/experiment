@@ -5,15 +5,11 @@ class Producer{
         this.name = args.name;
         this.base_cost = args.base_cost;
         this.count = args.count;
-        this._per_tick = args.per_tick
-    }
-
-    per_tick(){
-        return this._per_tick(this)
+        this.per_tick = args.per_tick
     }
 
     get cost(){
-        return this.base_cost;
+        return Math.floor(this.base_cost * Math.pow(1.03, this.count));
     }
 
     get buyable(){
@@ -25,16 +21,16 @@ export let PRODUCERS = {
         name: 'Ticker',
         base_cost: 10,
         count: 0,
-        per_tick: (prod) => {
-            return prod.count * .02
+        per_tick(){
+            return this.count * 12.02
         },
     }),
     'double-ticker': new Producer({
         name: 'Double-ticker',
         base_cost: 100,
         count: 0,
-        per_tick: (prod) => {
-           return prod.count ** 2
+        per_tick(){
+           return this.count ** 2
         },
     })
 }

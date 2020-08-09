@@ -8,44 +8,83 @@
 	<title>My custom Bulma website</title>
 	<link rel="stylesheet" href="css/style.css">
 	<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-	<script src="vue/app.js" type="module"></script>
+	<script src="js/vue/app.js" type="module"></script>
 </head>
 
 <body>
-    <section class="section">
-	<div class="container" id="app">
-        
-		<h1 class="title">
-			<p>Experimentation!</p>
-		</h1>
+	<section class="section">
+		<div class="container" id="app">
 
-		<p class="subtitle">
-			Playing with bulma, vue, npm, and who knows what else
-		</p>
+			<h1 class="title">
+				<p>Experimentation!</p>
+			</h1>
 
-        <hr/>
-        <h2 class="title is2">{{ data.score }}</h2>
-		<div class="field">
+			<p class="subtitle">
+				Playing with bulma, vue, npm, and who knows what else
+			</p>
+
+			<h2 class="title is2">{{ data.score | to_notation(active_notation) }}</h2>
 			<div class="field">
 				<p class="control">
-                    <button v-on:click="data.score += 1" class="button is-primary">
+					<button v-on:click="data.score += 1" class="button is-primary">
                         <span>Increment</span>
                     </button>
 				</p>
 			</div>
-            <div class="columns">
-                <div class="column is-one-quarter">
-                    <template v-for="(producer, key) in producers">
-                        <producer v-bind="producer"
-                            v-bind:id="key"
-                            v-bind:buyable="producer.buyable"
-                            v-on:buy="buy"
-                        ></producer>
-                    </template>
+
+			<div class="tabs">
+				<ul>
+					<li 
+                        v-for="tab in tabs" 
+                        :class="{ 'is-active': tab == active_tab }"
+						@click.prevent="set_active_tab(tab)"
+                    >
+						<a>{{ tab }}</a>
+					</li>
+				</ul>
+			</div>
+
+			<template v-if="active_tab == 'Numbers'">
+				<div class="columns">
+					<div class="column is-one-third">
+						<template v-for="(producer, key) in producers">
+							<producer 
+                                v-bind="producer"
+                                v-bind:id="key" 
+                                v-bind:buyable="producer.buyable"
+                                v-bind:cost="producer.cost"
+								v-on:buy="buy"
+                            ></producer>
+						</template>
+					</div>
+				</div>
+			</template>
+            <template v-if="active_tab == 'Options'">
+                <div class="dropdown is-active">
+                    <div class="dropdown-trigger">
+                        <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                        <span>Notations</span>
+                        <span class="icon is-small">
+                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                        </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                        <div class="dropdown-content">
+                            <a 
+                               v-for="notation in notations" 
+                               class="dropdown-item"
+                               :class="{ 'is-active': notation == active_notation }"
+                               v-on:click="set_notation(notation)"
+                            >
+                                {{ notation.display_name }}
+                            </a>
+                        </div>
+                    </div>
                 </div>
-            </div>            
+            </template>
 		</div>
-        </section>
+	</section>
 </body>
 
 </html>

@@ -1,10 +1,12 @@
 import {PRODUCERS} from './producers.js';
+import {NOTATIONS} from './notation.js';
 import _ from 'https://cdn.jsdelivr.net/npm/lodash-es@4.17.15/lodash.min.js';
 
 
 export let data = {
-    score: 0,
+    score: 123450,
     income: null,
+    notation: NOTATIONS.scientific,
 }
 
 export function buy(item, count=1){
